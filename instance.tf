@@ -97,7 +97,7 @@ resource "ibm_is_instance" "fgt2" {
   name    = "${var.CLUSTER_NAME}-fortigate2-${random_string.random_suffix.result}"
   image   = ibm_is_image.vnf_custom_image.id
   profile = var.PROFILE
-  resource_group = var.RESOURCE_GRP
+  #resource_group = var.RESOURCE_GRP
 
   primary_network_interface {
     name                 = "${var.CLUSTER_NAME}-port1-${random_string.random_suffix.result}"
