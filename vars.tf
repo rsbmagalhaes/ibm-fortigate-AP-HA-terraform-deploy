@@ -137,7 +137,7 @@ variable "SECURITY_GROUP" {
 variable "RESOURCE_GRP" {
   type        = string
   default     = ""
-  description = "The RESOURCE Group to attach to the FortiGate instances."
+  description = "The RESOURCE Group Name to attach to the FortiGate instances."
 }
 
 
