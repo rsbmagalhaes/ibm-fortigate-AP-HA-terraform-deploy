@@ -7,7 +7,7 @@ resource "ibm_is_volume" "logDisk1" {
   name    = "${var.CLUSTER_NAME}-logdisk1-${random_string.random_suffix.result}"
   profile = "10iops-tier"
   zone    = var.ZONE
-  resource_group_id = data.${var.RESOURCE_GRP}.id
+  resource_group_id = data.{var.RESOURCE_GRP}.id
 }
 
 resource "ibm_is_volume" "logDisk2" {
