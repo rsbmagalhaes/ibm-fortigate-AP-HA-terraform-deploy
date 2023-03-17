@@ -7,7 +7,7 @@ resource "ibm_is_volume" "logDisk1" {
   name    = "${var.CLUSTER_NAME}-logdisk1-${random_string.random_suffix.result}"
   profile = "10iops-tier"
   zone    = var.ZONE
-  resource_group = var.RESOURCE_GRP
+  resource_group_name = var.RESOURCE_GRP
 }
 
 resource "ibm_is_volume" "logDisk2" {
@@ -15,23 +15,23 @@ resource "ibm_is_volume" "logDisk2" {
   name    = "${var.CLUSTER_NAME}-logdisk2-${random_string.random_suffix.result}"
   profile = "10iops-tier"
   zone    = var.ZONE
-  resource_group = var.RESOURCE_GRP
+  resource_group_name = var.RESOURCE_GRP
 }
 
 resource "ibm_is_floating_ip" "publicip" {
   name   = "${var.CLUSTER_NAME}-publicip-${random_string.random_suffix.result}"
   target = ibm_is_instance.fgt1.primary_network_interface[0].id
-  resource_group = var.RESOURCE_GRP
+  resource_group_name = var.RESOURCE_GRP
 }
 resource "ibm_is_floating_ip" "publicip2" {
   name   = "${var.CLUSTER_NAME}-hamgmt-fgt1-${random_string.random_suffix.result}"
   target = ibm_is_instance.fgt1.network_interfaces[2].id // fourth port
-  resource_group = var.RESOURCE_GRP
+  resource_group_name = var.RESOURCE_GRP
 }
 resource "ibm_is_floating_ip" "publicip3" {
   name   = "${var.CLUSTER_NAME}-hamgmt-fgt2-${random_string.random_suffix.result}"
   target = ibm_is_instance.fgt2.network_interfaces[2].id //fourth port
-  resource_group = var.RESOURCE_GRP
+  resource_group_name = var.RESOURCE_GRP
 }
 
 //Primary Fortigate
@@ -39,8 +39,7 @@ resource "ibm_is_instance" "fgt1" {
   name    = "${var.CLUSTER_NAME}-fortigate1-${random_string.random_suffix.result}"
   image   = ibm_is_image.vnf_custom_image.id
   profile = var.PROFILE
-  #resource_group = var.RESOURCE_GRP
-
+  
 
   primary_network_interface {
     name                 = "${var.CLUSTER_NAME}-port1-${random_string.random_suffix.result}"
@@ -78,7 +77,7 @@ resource "ibm_is_instance" "fgt1" {
 
   vpc       = data.ibm_is_vpc.vpc1.id
   zone      = var.ZONE
-  resource_group = var.RESOURCE_GRP
+  resource_group_name = var.RESOURCE_GRP
   user_data = data.template_file.userdata_active.rendered
   keys      = [data.ibm_is_ssh_key.ssh_key.id]
   // Timeout issues persist. See https://www.ibm.com/cloud/blog/timeout-errors-with-ibm-cloud-schematics
@@ -97,7 +96,6 @@ resource "ibm_is_instance" "fgt2" {
   name    = "${var.CLUSTER_NAME}-fortigate2-${random_string.random_suffix.result}"
   image   = ibm_is_image.vnf_custom_image.id
   profile = var.PROFILE
-  #resource_group = var.RESOURCE_GRP
 
   primary_network_interface {
     name                 = "${var.CLUSTER_NAME}-port1-${random_string.random_suffix.result}"
@@ -131,7 +129,7 @@ resource "ibm_is_instance" "fgt2" {
 
   vpc       = data.ibm_is_vpc.vpc1.id
   zone      = var.ZONE
-  resource_group = var.RESOURCE_GRP
+  resource_group_name = var.RESOURCE_GRP
   user_data = data.template_file.userdata_passive.rendered
   keys      = [data.ibm_is_ssh_key.ssh_key.id]
   //Timeout issues persist. See https://www.ibm.com/cloud/blog/timeout-errors-with-ibm-cloud-schematics
