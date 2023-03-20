@@ -78,7 +78,7 @@ resource "ibm_is_instance" "fgt1" {
   vpc       = data.ibm_is_vpc.vpc1.id
   zone      = var.ZONE
   #resource_group = var.RESOURCE_GRP
-  resource_group = data.ibm_resource_group.rg.id
+  resource_group = tostring(data.ibm_resource_group.rg.id)
   user_data = data.template_file.userdata_active.rendered
   keys      = [data.ibm_is_ssh_key.ssh_key.id]
   // Timeout issues persist. See https://www.ibm.com/cloud/blog/timeout-errors-with-ibm-cloud-schematics
