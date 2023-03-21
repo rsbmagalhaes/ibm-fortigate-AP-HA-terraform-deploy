@@ -43,6 +43,7 @@ resource "ibm_is_instance" "fgt1" {
   name    = "${var.CLUSTER_NAME}-fortigate1-${random_string.random_suffix.result}"
   image   = ibm_is_image.vnf_custom_image.id
   profile = var.PROFILE
+  resource_group = local.rgroup
   
 
   primary_network_interface {
@@ -83,7 +84,7 @@ resource "ibm_is_instance" "fgt1" {
   zone      = var.ZONE
   #resource_group = var.RESOURCE_GRP
   #resource_group = tostring(data.ibm_resource_group.rg.id)
-  resource_group = local.rgroup
+  #resource_group = local.rgroup
   user_data = data.template_file.userdata_active.rendered
   keys      = [data.ibm_is_ssh_key.ssh_key.id]
   // Timeout issues persist. See https://www.ibm.com/cloud/blog/timeout-errors-with-ibm-cloud-schematics
@@ -102,6 +103,7 @@ resource "ibm_is_instance" "fgt2" {
   name    = "${var.CLUSTER_NAME}-fortigate2-${random_string.random_suffix.result}"
   image   = ibm_is_image.vnf_custom_image.id
   profile = var.PROFILE
+  resource_group = local.rgroup
 
   primary_network_interface {
     name                 = "${var.CLUSTER_NAME}-port1-${random_string.random_suffix.result}"
@@ -135,7 +137,7 @@ resource "ibm_is_instance" "fgt2" {
 
   vpc       = data.ibm_is_vpc.vpc1.id
   zone      = var.ZONE
-  resource_group = data.ibm_resource_group.rg.id
+  #resource_group = data.ibm_resource_group.rg.id
   user_data = data.template_file.userdata_passive.rendered
   keys      = [data.ibm_is_ssh_key.ssh_key.id]
   //Timeout issues persist. See https://www.ibm.com/cloud/blog/timeout-errors-with-ibm-cloud-schematics
